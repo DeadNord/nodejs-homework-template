@@ -1,36 +1,24 @@
 const express = require("express");
 
-const { validation } = require("../../middlewares/validationMiddleware");
+const {
+  authMiddleware,
+  validationMiddleware,
+} = require("../../middlewares/index");
 
 const {
   signUpController,
   signInController,
-  //   addContactController,
-  //   removeContactByIdController,
-  //   putContactController,
-  //   patchContactController,
+  signOutController,
 } = require("../../controllers/auth/index");
 
 const { joiSchema } = require("../../models/user");
 
 const router = express.Router();
 
-// router.get("/", getContactsController);
+router.post("/signup", validationMiddleware(joiSchema), signUpController);
 
-// router.get("/:id", getContactByIdController);
+router.post("/signin", validationMiddleware(joiSchema), signInController);
 
-router.post("/signup", validation(joiSchema), signUpController);
-
-router.post("/signin", validation(joiSchema), signInController);
-
-// router.delete("/:id", removeContactByIdController);
-
-// router.put("/:id", validation(joiSchema), putContactController);
-
-// router.patch(
-//   "/:id/favorite",
-//   validation(favoriteSchema),
-//   patchContactController,
-// );
+router.get("/signout", authMiddleware, signOutController);
 
 module.exports = router;
