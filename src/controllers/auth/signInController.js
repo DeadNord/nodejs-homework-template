@@ -9,14 +9,20 @@ const signInController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
+  // if (!user) {
+  //   throw new Unauthorized(`Email ${email} not found`);
+  // }
   if (!user) {
-    throw new Unauthorized(`Email ${email} not found`);
+    res.status(401).json(Unauthorized(`Email ${email} not found`));
   }
 
   const passCompare = bcrypt.compareSync(password, user.password);
 
+  // if (!passCompare) {
+  //   throw new Unauthorized(`Password wrong`);
+  // }
   if (!passCompare) {
-    throw new Unauthorized(`Password wrong`);
+    res.status(401).json(Unauthorized(`Password wrong`));
   }
 
   const payload = {

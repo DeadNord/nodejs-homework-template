@@ -9,6 +9,7 @@ const contactSchema = Schema(
     },
     email: {
       type: String,
+      unique: true,
     },
     phone: {
       type: String,

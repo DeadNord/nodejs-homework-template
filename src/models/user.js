@@ -35,10 +35,6 @@ const joiSchema = Joi.object({
   // token:
 });
 
-// const favoriteSchema = Joi.object({
-//   favorite: Joi.bool().required(),
-// });
-
 const User = model("user", userSchema);
 
 module.exports = { User, joiSchema };

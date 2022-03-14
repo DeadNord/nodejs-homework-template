@@ -1,7 +1,4 @@
-// const { Conflict } = require("http-errors");
 const { User } = require("../../models/index");
-
-const { User } = require("../../models");
 
 const signOutController = async (req, res, next) => {
   const { _id } = req.user;
