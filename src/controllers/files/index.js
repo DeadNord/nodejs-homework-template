@@ -1,7 +1,7 @@
 const uploadFilesController = require("./uploadFilesController");
-const getFilesController = require("./getFilesController");
+// const getFilesController = require("./getFilesController");
 
 module.exports = {
   uploadFilesController,
-  getFilesController,
+  // getFilesController,
 };
