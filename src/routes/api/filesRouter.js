@@ -1,14 +1,17 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const { v4 } = require("uuid");
+
+const FILE_DIR = path.resolve("./tmp");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve("./tmp"));
+    cb(null, FILE_DIR);
   },
   filename: (req, file, cb) => {
-    const [filename, extension] = file.originalname.split(".");
-    cb(null, `${filename}.${extension}`);
+    const [, extension] = file.originalname.split(".");
+    cb(null, `${v4()}.${extension}`);
   },
 });
 
@@ -20,7 +23,7 @@ const uploadMiddleware = multer({ storage });
 
 const {
   uploadFilesController,
-  // getFilesController,
+  // downloadFilesController,
 } = require("../../controllers/files/index");
 
 // const { joiSchema } = require("../../models/contact");
@@ -33,6 +36,6 @@ router.post(
   uploadFilesController,
 );
 
-// router.get("/download", getFilesController);
+router.use("/download", express.static(FILE_DIR));
 
 module.exports = router;
