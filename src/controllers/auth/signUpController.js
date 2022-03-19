@@ -2,10 +2,12 @@ const { Conflict } = require("http-errors");
 const { User } = require("../../models/index");
 const bcrypt = require("bcrypt");
 
+const gravatar = require("gravatar");
+
 const signUpController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-
+  console.log(req.body);
   // if (user) {
   //   throw new Conflict(`User with ${email} already exist`);
   // }
@@ -25,11 +27,13 @@ const signUpController = async (req, res, next) => {
 
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-  // Create avatar
+  const avatarURL = gravatar.url(email);
 
-  // add avatarURL
-
-  await User.create({ email, password: hashPassword });
+  await User.create({
+    email,
+    password: hashPassword,
+    avatarURL,
+  });
 
   res.status(201).json({
     status: "success",
