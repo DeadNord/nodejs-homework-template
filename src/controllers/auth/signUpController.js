@@ -6,18 +6,6 @@ const signUpController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  // if (user) {
-  //   throw new Conflict(`User with ${email} already exist`);
-  // }
-  // if (user) {
-  //   res.status(409).json({
-  //     status: "409 Conflict",
-  //     code: 409,
-  //     data: {
-  //       message: `User with ${email} already exist`,
-  //     },
-  //   });
-  // }
   if (user) {
     res.status(409).json(Conflict(`User with ${email} already exist`));
   }
