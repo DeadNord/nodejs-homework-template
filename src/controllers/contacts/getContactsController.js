@@ -3,18 +3,18 @@ const { Contact } = require("../../models/index");
 const getContactsController = async (req, res, next) => {
   const { _id } = req.user;
   const { page = 1, limit = 10 } = req.query;
-  const { favorite } = req.query;
+  const favorite = req.query.favorite;
   const skip = (page - 1) * limit;
+  let contacts = [];
 
-  const contacts = await Contact.find(
-    { owner: _id },
-    // {favorite === true ? favorite: favorite : null},
-    "",
-    {
-      skip,
-      limit: +limit,
-    },
-  ).populate("owner", "_id name email");
+  contacts = await Contact.find({ owner: _id }, "", {
+    skip,
+    limit: +limit,
+  }).populate("owner", "_id name email phone");
+
+  if (Boolean(favorite) === true) {
+    contacts = await contacts.find(x => x.favorite === Boolean(favorite));
+  }
 
   res.json({
     status: "success",

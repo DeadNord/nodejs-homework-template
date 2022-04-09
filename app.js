@@ -7,7 +7,6 @@ const {
   authRouter,
   usersRouter,
   contactsRouter,
-  filesRouter,
 } = require("./src/routes/api/index");
 const app = express();
 

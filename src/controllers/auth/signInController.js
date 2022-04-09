@@ -2,25 +2,19 @@ const { Unauthorized } = require("http-errors");
 
 const { User } = require("../../models/index");
 const bcrypt = require("bcrypt");
-const { SECRET_KEY } = process.env;
+const { JWT_SECRET_KEY } = process.env;
 const jwt = require("jsonwebtoken");
 
 const signInController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  // if (!user) {
-  //   throw new Unauthorized(`Email ${email} not found`);
-  // }
   if (!user) {
     res.status(401).json(Unauthorized(`Email ${email} not found`));
   }
 
   const passCompare = bcrypt.compareSync(password, user.password);
 
-  // if (!passCompare) {
-  //   throw new Unauthorized(`Password wrong`);
-  // }
   if (!passCompare) {
     res.status(401).json(Unauthorized(`Password wrong`));
   }
@@ -28,7 +22,7 @@ const signInController = async (req, res, next) => {
   const payload = {
     id: user._id,
   };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+  const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1h" });
   await User.findByIdAndUpdate(user._id, { token });
   res.status(200).json({
     status: "success",
