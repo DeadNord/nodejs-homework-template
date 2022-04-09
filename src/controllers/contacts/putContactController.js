@@ -1,8 +1,9 @@
+
+
 const { Contact } = require("../../models/index");
 
 const putContactController = async (req, res, next) => {
   const { id } = req.params;
-
   const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
     new: true,
   });
