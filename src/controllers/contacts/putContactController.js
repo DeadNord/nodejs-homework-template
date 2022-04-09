@@ -1,4 +1,3 @@
-
 const { Contact } = require("../../models/index");
 
 const putContactController = async (req, res, next) => {

@@ -8,7 +8,6 @@ const {
   patchAvatarController,
 } = require("../../controllers/users/index");
 
-
 const router = express.Router();
 
 router.get("/current", authMiddleware, getCurrentController);
