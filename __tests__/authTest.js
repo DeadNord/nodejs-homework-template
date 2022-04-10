@@ -1,38 +1,34 @@
-// const { authMiddleware } = require("../src/middlewares/index");
-// const jwt = require("jsonwebtoken");
-// const { SECRET_KEY } = process.env;
-
-const { token } = require("morgan");
+const request = require("supertest");
+const app = require("../app");
 
 describe("Authorization service test", () => {
-  it("SignIn", () => {
-    const schema = 1 + 2;
-
-    const x = 1;
-    const y = 2;
-
-    const operation = (a, b) => {
-      return a + b;
+  it("Sign In", () => {
+    const testUser = {
+      email: "emailTest@gmail.com",
+      password: "g52g2523523",
     };
 
-    const result = operation(x, y);
+    const mRes = {
+      status: "success",
+      code: 200,
+      data: {
+        token: String,
+        user: {
+          email: testUser.email,
+          subscription: "starter" || "pro" || "business",
+        },
+      },
+    };
 
-    expect(result).toEqual(schema);
+    request(app)
+      .post("/api/auth/signin")
+      .send(testUser)
+      .set("Accept", "application/json")
+      .expect(200)
+      .expect(function (res) {
+        res.body.data.token = mRes.data.token;
+        res.body.data.user.email = mRes.data.user.email;
+        res.body.data.user.subscription = mRes.data.user.subscription;
+      });
   });
 });
-
-//  unit-тесты для контроллера входа (login/signin)
-
-// ответ должен иметь статус-код 200
-// в ответе должен возвращаться токен
-// в ответе должен возвращаться объект user с 2 полями email и subscription, имеющие тип данных String
-
-//  res.status(200).json({
-//       code: 200,
-//    token: token,
-//    user: {
-//      email: email
-//      subscription:  subscription
-//    }
-//     });
-//   }
