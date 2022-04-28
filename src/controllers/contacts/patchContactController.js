@@ -1,5 +1,3 @@
-
-
 const { Contact } = require("../../models/index");
 
 const patchContactController = async (req, res, next) => {

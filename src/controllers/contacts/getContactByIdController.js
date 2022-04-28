@@ -1,5 +1,3 @@
-
-
 const { Contact } = require("../../models/index");
 
 const getContactByIdController = async (req, res, next) => {
