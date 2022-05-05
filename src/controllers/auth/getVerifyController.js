@@ -1,38 +1,27 @@
 const { User } = require('../../models/index');
 
-const nodemailer = require('nodemailer');
-require('dotenv').config();
 const VerificationEmail = process.env.EMAIL;
-const EmailPassword = process.env.PASSWORD;
-
-const config = {
-  host: 'smtp.meta.ua',
-  port: 465,
-  secure: true,
-  auth: {
-    user: VerificationEmail,
-    pass: EmailPassword,
-  },
-};
+const { nodemailerSendMsg } = require('../helpers/index');
 
 const getVerifyController = async (req, res, next) => {
-  const verificationToken = req.query.verificationToken;
-  const transporter = nodemailer.createTransport(config);
+  const { verificationToken } = req.params;
 
-  const user = await User.find(verificationToken);
+  const user = await User.findOne({ verificationToken });
   if (user) {
-    user.update({ verificationToken: null, verify: true });
-
+    await User.findOneAndUpdate(
+      { verificationToken: verificationToken },
+      {
+        verificationToken: null,
+        verify: true,
+      },
+    );
     const msg = {
       from: VerificationEmail,
       to: user.email,
-      subject: 'Nodemailer Test Success',
+      subject: 'Nodemailer Test',
       text: 'Ваша почта успешно подтверждена. Регистрация завершена!',
     };
-    await transporter
-      .sendMail(msg)
-      .then(info => console.log(info))
-      .catch(err => console.log(err));
+    nodemailerSendMsg(msg);
 
     res.json({
       status: 'success',

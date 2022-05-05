@@ -6,26 +6,13 @@ const gravatar = require('gravatar');
 const HOST = process.env.HOST;
 const { v4 } = require('uuid');
 
-const nodemailer = require('nodemailer');
-require('dotenv').config();
 const VerificationEmail = process.env.EMAIL;
-const EmailPassword = process.env.PASSWORD;
-
-const config = {
-  host: 'smtp.meta.ua',
-  port: 465,
-  secure: true,
-  auth: {
-    user: VerificationEmail,
-    pass: EmailPassword,
-  },
-};
+const { nodemailerSendMsg } = require('../helpers/index');
 
 const signUpController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  const transporter = nodemailer.createTransport(config);
   // const msg = {
   //   subject: 'Thank you for registation.',
   //   text: `Registration user: ${email}. Verify you email`,
@@ -51,15 +38,12 @@ const signUpController = async (req, res, next) => {
   const msg = {
     from: VerificationEmail,
     to: email,
-    subject: 'Nodemailer Test Verify',
-    text: 'Test',
-    // text: `Перейди по ссылке ${HOST}/api/auth/verify/${verificationToken}`,
+    subject: 'Nodemailer Test',
+    text: `Перейди по ссылке ${HOST}/api/auth/verify/${verificationToken} для верификации`,
+    html: `Перейди по <a href="${HOST}/api/auth/verify/${verificationToken}">ссылке</a> для верификации`,
   };
 
-  await transporter
-    .sendMail(msg)
-    .then(info => console.log(info))
-    .catch(err => console.log(err));
+  nodemailerSendMsg(msg);
 
   res.status(201).json({
     status: 'success',
