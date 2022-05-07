@@ -1,4 +1,4 @@
-const { Contact } = require("../../models/index");
+const { Contact } = require('../../models/index');
 
 const putContactController = async (req, res, next) => {
   const { id } = req.params;
@@ -6,8 +6,8 @@ const putContactController = async (req, res, next) => {
     new: true,
   });
   if (updateContact) {
-    res.json({
-      status: "success",
+    res.status(200).json({
+      status: 'success',
       code: 200,
       data: {
         result: updateContact,
@@ -16,7 +16,7 @@ const putContactController = async (req, res, next) => {
   }
   if (!updateContact) {
     res.status(404).json({
-      status: "error",
+      status: 'error',
       code: 404,
       message: `Contact with id=${id} not found`,
     });

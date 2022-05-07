@@ -23,7 +23,7 @@ const getVerifyController = async (req, res, next) => {
     };
     nodemailerSendMsg(msg);
 
-    res.json({
+    res.status(200).json({
       status: 'success',
       code: 200,
       message: 'Verification successful',

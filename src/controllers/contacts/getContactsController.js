@@ -1,4 +1,4 @@
-const { Contact } = require("../../models/index");
+const { Contact } = require('../../models/index');
 
 const getContactsController = async (req, res, next) => {
   const { _id } = req.user;
@@ -7,17 +7,17 @@ const getContactsController = async (req, res, next) => {
   const skip = (page - 1) * limit;
   let contacts = [];
 
-  contacts = await Contact.find({ owner: _id }, "", {
+  contacts = await Contact.find({ owner: _id }, '', {
     skip,
     limit: +limit,
-  }).populate("owner", "_id name email phone");
+  }).populate('owner', '_id name email phone');
 
   if (Boolean(favorite) === true) {
     contacts = await contacts.find(x => x.favorite === Boolean(favorite));
   }
 
-  res.json({
-    status: "success",
+  res.status(200).json({
+    status: 'success',
     code: 200,
     data: {
       contacts,
