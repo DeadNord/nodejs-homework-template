@@ -7,7 +7,7 @@ const HOST = process.env.HOST;
 const { v4 } = require('uuid');
 
 const VerificationEmail = process.env.EMAIL;
-const { nodemailerSendMsg } = require('../helpers/index');
+const { nodemailerSendMsg } = require('../../services/nodemailer/index');
 
 const signUpController = async (req, res, next) => {
   const { email, password } = req.body;

@@ -1,7 +1,7 @@
 const { User } = require('../../models/index');
 
 const VerificationEmail = process.env.EMAIL;
-const { nodemailerSendMsg } = require('../helpers/index');
+const { nodemailerSendMsg } = require('../../services/nodemailer/index');
 
 const getVerifyController = async (req, res, next) => {
   const { verificationToken } = req.params;
