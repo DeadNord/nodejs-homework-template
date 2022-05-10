@@ -1,18 +1,29 @@
-const { Conflict } = require("http-errors");
-const { User } = require("../../models/index");
-const bcrypt = require("bcrypt");
+const { Conflict } = require('http-errors');
+const { User } = require('../../models/index');
+const bcrypt = require('bcrypt');
+const gravatar = require('gravatar');
 
-const gravatar = require("gravatar");
+const HOST = process.env.HOST;
+const { v4 } = require('uuid');
+
+const VerificationEmail = process.env.EMAIL;
+const { nodemailerSendMsg } = require('../../services/nodemailer/index');
 
 const signUpController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  console.log(req.body);
+
+  // const msg = {
+  //   subject: 'Thank you for registation.',
+  //   text: `Registration user: ${email}. Verify you email`,
+  //   html: `<h1>Registration user: ${email}. Verify you email</h1>`,
+  // };
 
   if (user) {
     res.status(409).json(Conflict(`User with ${email} already exist`));
   }
 
+  const verificationToken = v4();
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
   const avatarURL = gravatar.url(email);
@@ -21,10 +32,21 @@ const signUpController = async (req, res, next) => {
     email,
     password: hashPassword,
     avatarURL,
+    verificationToken,
   });
 
+  const msg = {
+    from: VerificationEmail,
+    to: email,
+    subject: 'Nodemailer Test',
+    text: `Перейди по ссылке ${HOST}/api/auth/verify/${verificationToken} для верификации`,
+    html: `Перейди по <a href="${HOST}/api/auth/verify/${verificationToken}">ссылке</a> для верификации`,
+  };
+
+  nodemailerSendMsg(msg);
+
   res.status(201).json({
-    status: "success",
+    status: 'success',
     code: 201,
     data: {
       user: {
