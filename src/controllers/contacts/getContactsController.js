@@ -6,14 +6,15 @@ const getContactsController = async (req, res, next) => {
 
   const { favorite = false, page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
+  let contacts = [];
 
-  const contacts = await Contact.find({ owner: _id }, '', {
+  contacts = await Contact.find({ owner: _id }, '', {
     skip,
     limit: +limit,
   });
 
   if (Boolean(favorite) === true) {
-    contacts = await contacts.find(x => x.favorite === Boolean(favorite));
+    contacts = await Contact.find({ owner: _id, favorite: favorite });
   }
 
   res.status(200).json({
