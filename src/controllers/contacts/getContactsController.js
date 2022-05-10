@@ -1,5 +1,4 @@
 const { Contact } = require('../../models/index');
-// const { findAllContacts } = require('../../services/mongo/index');
 
 const getContactsController = async (req, res, next) => {
   const { _id } = req.user;
@@ -14,7 +13,7 @@ const getContactsController = async (req, res, next) => {
   });
 
   if (Boolean(favorite) === true) {
-    contacts = await Contact.find({ owner: _id, favorite: favorite });
+    contacts = await Contact.find({ owner: _id, favorite });
   }
 
   res.status(200).json({

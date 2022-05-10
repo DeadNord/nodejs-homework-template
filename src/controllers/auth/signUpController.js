@@ -13,12 +13,6 @@ const signUpController = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  // const msg = {
-  //   subject: 'Thank you for registation.',
-  //   text: `Registration user: ${email}. Verify you email`,
-  //   html: `<h1>Registration user: ${email}. Verify you email</h1>`,
-  // };
-
   if (user) {
     res.status(409).json(Conflict(`User with ${email} already exist`));
   }

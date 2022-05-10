@@ -4,7 +4,11 @@ const { JWT_SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = async (req, res, next) => {
-  const [, token] = req.headers['authorization'].split(' ');
+  if (req.headers.authorization === undefined) {
+    res.status(401).json(Unauthorized('No authorization token'));
+  }
+
+  const [, token] = req.headers.authorization.split(' ');
 
   try {
     const { id } = jwt.verify(token, JWT_SECRET_KEY);
@@ -12,6 +16,7 @@ const authMiddleware = async (req, res, next) => {
     if (!user || !user.token) {
       res.status(401).json(Unauthorized('Not authorized'));
     }
+
     req.user = user;
     next();
   } catch (error) {

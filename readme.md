@@ -1,18 +1,3 @@
-- hw02 - +
-- hw03 - +
-- hw04 - ?
-- hw05 -
-- hw06 -
-
-### Команды:
-
-- `npm start` &mdash; старт сервера в режиме production
-- `npm run start:dev` &mdash; старт сервера в режиме разработки (development)
-- `npm run lint` &mdash; запустить выполнение проверки кода с eslint, необходимо
-  выполнять перед каждым PR и исправлять все ошибки линтера
-- `npm lint:fix` &mdash; та же проверка линтера, но с автоматическими
-  исправлениями простых ошибок
-
 ### Рауты:
 
 Contacts
@@ -27,6 +12,8 @@ Contacts
 
 Auth
 
+- GET http://localhost:3000/api/auth/verify/:verificationToken --- Верификация
+  Email по Токену
 - POST http://localhost:3000/api/auth/signup --- Регистрация
 - POST http://localhost:3000/api/auth/signin --- Авторизация
 - GET http://localhost:3000/api/auth/signout --- Лог аут
@@ -34,4 +21,13 @@ Auth
 Users
 
 - GET - http://localhost:3000/api/users/current --- Текущий пользователь
-- PATCH - http://localhost:3000/api/users --- Изменить текущего пользователя
+- PATCH - http://localhost:3000/api/users --- Изменить Статус текущего
+  пользователя
+- PATCH - http://localhost:3000/api/users/avatars --- Изменить аватар текущего
+  пользователя
+
+Files
+
+- POST - http://localhost:3000/api/files/upload --- Загрузить файл
+- USE - http://localhost:3000/api/files/download/filename.format --- Скачать
+  файл по названию

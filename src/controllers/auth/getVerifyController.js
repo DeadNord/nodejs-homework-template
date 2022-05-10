@@ -9,7 +9,7 @@ const getVerifyController = async (req, res, next) => {
   const user = await User.findOne({ verificationToken });
   if (user) {
     await User.findOneAndUpdate(
-      { verificationToken: verificationToken },
+      { verificationToken },
       {
         verificationToken: null,
         verify: true,
